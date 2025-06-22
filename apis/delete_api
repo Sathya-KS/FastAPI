@@ -1,0 +1,27 @@
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+# Sample data (replace with your actual data source)
+users = {
+    "user1": {"name": "Alice", "age": 30},
+    "user2": {"name": "Bob", "age": 25}
+}
+
+@app.delete("/users/{user_id}")
+async def delete_user(user_id: str):
+
+    if user_id not in users:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    del users[user_id]
+    return {"message": f"User {user_id} deleted successfully"}
+
+# Example usage:
+# To delete user1:
+# Send a DELETE request to /users/user1
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)
